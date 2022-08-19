@@ -1,0 +1,11 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create
+
+jwt:
+  secret-key: "some_secret_key"
+  validity-in-ms: 864000000000  # 1day
+
+hibernate:
+  globally_quoted_identifiers: true
