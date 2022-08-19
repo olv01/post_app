@@ -1,4 +1,4 @@
-package com.post.app.security.repositories;
+package com.post.app.repositories;
 
 import com.post.app.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;

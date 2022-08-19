@@ -1,7 +1,7 @@
 package com.post.app.security;
 
 import com.post.app.domain.User;
-import com.post.app.security.repositories.UserRepository;
+import com.post.app.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
