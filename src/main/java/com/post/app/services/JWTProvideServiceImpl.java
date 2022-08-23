@@ -30,6 +30,7 @@ public class JWTProvideServiceImpl implements JWTProvideService {
         this.validityInMs = validityInMs;
     }
 
+    // It must be called only if the user is authenticated
     @Override
     public JWTDto generateToken(Authentication authentication) {
         // generate token based on the authentication information
