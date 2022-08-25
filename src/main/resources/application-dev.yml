@@ -1,11 +1,20 @@
 spring:
+  datasource:
+    generate-unique-name: false
+    name: post
+
   jpa:
+    show-sql: true
+
     hibernate:
       ddl-auto: create
+
+org.springframework:
+  orm.jpa: DEBUG
+  transaction: DEBUG
+  security.web.FilterChainProxy: DEBUG
 
 jwt:
   secret-key: "some_secret_key"
   validity-in-ms: 864000000000  # 1day
 
-hibernate:
-  globally_quoted_identifiers: true

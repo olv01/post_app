@@ -3,6 +3,7 @@ package com.post.app.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -20,22 +21,25 @@ public class SecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeRequests()
-                    .antMatchers("/", "/**").access("permitAll()")
+                .antMatchers(HttpMethod.OPTIONS).permitAll()
+                .antMatchers("/api/auth/**").access("permitAll()")
+                .antMatchers("/", "/**").access("permitAll()")
 
                 // Allow access to H2 console
                 .and()
-                    .csrf()
-                    .ignoringAntMatchers("/h2-console/**", "/api/**")
+                .csrf()
+                .ignoringAntMatchers("/h2-console/**", "/api/**")
+
                 .and()
-                    .headers()
-                    .frameOptions()
-                    .sameOrigin()
+                .headers()
+                .frameOptions()
+                .sameOrigin()
 
 
                 .and()
                 // Apply CustomUserDetailsService
                 .userDetailsService(userDetailsService)
-                // We use JWT authentication, so we don't need session management
+                // Because of JWT authentication, app doesn't need session management
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .build();
