@@ -16,5 +16,4 @@ org.springframework:
 
 jwt:
   secret-key: "some_secret_key"
-  validity-in-ms: 864000000000  # 1day
-
+  validity-in-hour: 1000 # hour
