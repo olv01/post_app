@@ -1,0 +1,2 @@
+INSERT INTO USERS VALUES(2, CURDATE(), CURDATE(), 0, 'john@email.com', '$2a$10$SlVycZUTKK80zxim9BYIleMAnP6elbGg8ARQkGkC/6isAK/TIZEJa', 'John');
+INSERT INTO USERS VALUES(3, CURDATE(), CURDATE(), 0, 'jane@email.com', '$2a$10$SlVycZUTKK80zxim9BYIleMAnP6elbGg8ARQkGkC/6isAK/TIZEJa', 'Jane');

@@ -14,6 +14,7 @@ import java.util.Optional;
 @Transactional
 @Component
 public class CustomUserDetailsService implements UserDetailsService {
+
     @Autowired
     private UserRepository userRepo;
 

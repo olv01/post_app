@@ -87,7 +87,7 @@ public class AuthenticationServiceImpl implements AuthenticationService, SmartIn
 
         // check if username already exists
         if (userRepository.existsByUsername(username)) {
-            throw new BadCredentialsException("사용자가 이미 존재합니다.");
+            throw new BadCredentialsException("Username already exists");
         }
 
         // retrieve role object

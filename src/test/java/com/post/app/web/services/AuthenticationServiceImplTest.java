@@ -78,7 +78,6 @@ class AuthenticationServiceImplTest {
 
     @Test
     void createNewUser() {
-//        System.out.println(userRepository);
         given(userRepository.existsByUsername(anyString())).willReturn(false);
         given(roleRepository.findByName(any())).willReturn(Optional.of(new Role(ERole.ROLE_USER)));
         given(encoder.encode(any())).willReturn("encryptedPassword");

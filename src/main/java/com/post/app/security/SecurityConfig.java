@@ -39,7 +39,6 @@ public class SecurityConfig {
                 .frameOptions()
                 .sameOrigin()
 
-
                 .and()
                 // Apply CustomUserDetailsService
                 .userDetailsService(userDetailsService)

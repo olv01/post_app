@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.HashMap;
@@ -18,7 +18,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@ActiveProfiles({"dev", "init-role", "init-user"})
+@Sql({"/db/init_role.sql", "/db/init_user.sql"})
+@Sql(scripts = "/db/cleanup_data.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 class AuthControllerIntegrationTest {
 
     @Autowired
@@ -57,6 +58,5 @@ class AuthControllerIntegrationTest {
                 .andExpect(jsonPath("$.username").value("Mike"))
                 .andExpect(jsonPath("$.token").isNotEmpty())
                 .andExpect(jsonPath("$.message").value("New User Created"));
-
     }
 }
