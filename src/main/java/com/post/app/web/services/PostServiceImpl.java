@@ -55,7 +55,6 @@ public class PostServiceImpl implements PostService {
         if (post.isEmpty()) {
             throw new ResourceNotFoundException("Post not found");
         }
-        ;
         return postMapper.postToPostDto(post.get());
     }
 
@@ -105,7 +104,6 @@ public class PostServiceImpl implements PostService {
         if (post.isEmpty()) {
             throw new ResourceNotFoundException("Post not found");
         }
-        ;
 
         // If user isn't the owner of a post, raise exception
         if (!user.getUsername().equals(post.get().getUser().getUsername())) {

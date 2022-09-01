@@ -4,8 +4,8 @@ import com.post.app.services.JWTProvideService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -48,12 +48,14 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
             if (username.isPresent()) {
                 // Load UserDetails object from CustomUserDetailsService which delegates its job to UserRepository
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username.get());
-                Authentication authToken = new UsernamePasswordAuthenticationToken(userDetails,
+                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails,
                         null,
                         userDetails.getAuthorities());
 
                 // Set authentication principal to current SecurityContext. Now, the request is authenticated
                 SecurityContextHolder.getContext().setAuthentication(authToken);
+            } else {
+                throw new BadCredentialsException("token invalid");
             }
         }
         filterChain.doFilter(request, response);
