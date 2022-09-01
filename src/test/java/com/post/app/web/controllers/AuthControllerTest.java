@@ -70,6 +70,7 @@ class AuthControllerTest {
                 "encryptedToken",
                 new Date());
         given(authenticationService.createNewUser(any())).willReturn(response);
+
         mockMvc.perform(post("/api/auth/signUp")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonToString(request))

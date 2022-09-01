@@ -5,7 +5,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public class PostListPaged {
-    private List<PostListItem> postList;
+    private List<PostListItem> content;
     private Pageable pageable;
     private int total;
     // for searched result
@@ -14,25 +14,25 @@ public class PostListPaged {
     public PostListPaged() {
     }
 
-    public PostListPaged(List<PostListItem> postList, Pageable pageable, int total) {
-        this.postList = postList;
+    public PostListPaged(List<PostListItem> content, Pageable pageable, int total) {
+        this.content = content;
         this.pageable = pageable;
         this.total = total;
     }
 
-    public PostListPaged(List<PostListItem> content, Pageable pageable, int total, long totalElements) {
-        this.postList = content;
+    public PostListPaged(List<PostListItem> postList, Pageable pageable, int total, long totalElements) {
+        this.content = postList;
         this.pageable = pageable;
         this.total = total;
         this.totalElements = totalElements;
     }
 
     public List<PostListItem> getContent() {
-        return postList;
+        return content;
     }
 
-    public void setContent(List<PostListItem> postList) {
-        this.postList = postList;
+    public void setContent(List<PostListItem> content) {
+        this.content = content;
     }
 
     public Pageable getPageable() {
