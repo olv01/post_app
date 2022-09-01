@@ -27,14 +27,16 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
                 .antMatchers("/api/auth/**").access("permitAll()")
+                .antMatchers(HttpMethod.GET, "/api/posts/**").access("permitAll()")
+                .antMatchers("/api/posts/**").access("hasRole('USER')")
                 .antMatchers("/", "/**").access("permitAll()")
 
                 // Allow access to H2 console
                 .and()
                 .csrf()
-                .ignoringAntMatchers("/h2-console/**", "/api/**")
+                .disable()
+//                .ignoringAntMatchers("/h2-console/**", "/api/**")
 
-                .and()
                 .headers()
                 .frameOptions()
                 .sameOrigin()
