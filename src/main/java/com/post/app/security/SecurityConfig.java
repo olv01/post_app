@@ -1,6 +1,7 @@
 package com.post.app.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -11,6 +12,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 public class SecurityConfig {
@@ -20,6 +27,9 @@ public class SecurityConfig {
 
     @Autowired
     private JWTAuthenticationFilter jwtAuthenticationFilter;
+
+    @Value("${cors.origins:http://localhost:3000}")
+    private String[] corsOrigins;
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -31,11 +41,9 @@ public class SecurityConfig {
                 .antMatchers("/api/posts/**").access("hasRole('USER')")
                 .antMatchers("/", "/**").access("permitAll()")
 
-                // Allow access to H2 console
                 .and()
                 .csrf()
                 .disable()
-//                .ignoringAntMatchers("/h2-console/**", "/api/**")
 
                 .headers()
                 .frameOptions()
@@ -44,7 +52,10 @@ public class SecurityConfig {
                 .and()
                 // Apply CustomUserDetailsService
                 .userDetailsService(userDetailsService)
-                // Because of JWT authentication, app doesn't need session management
+                // by default uses a Bean by the name of corsConfigurationSource
+                .cors()
+                .and()
+                // Because of JWT authentication, it doesn't need session management
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
@@ -54,5 +65,16 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList(corsOrigins));
+        configuration.setAllowedHeaders(List.of("content-type", "Authorization"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/api/**", configuration);
+        return source;
     }
 }
