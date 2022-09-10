@@ -3,6 +3,7 @@ package com.post.app.web.services;
 import com.post.app.domain.Post;
 import com.post.app.domain.User;
 import com.post.app.exception.ResourceNotFoundException;
+import com.post.app.model.ECategory;
 import com.post.app.repositories.PostRepository;
 import com.post.app.web.model.BaseResponse;
 import com.post.app.web.model.Post.PostDto;
@@ -94,6 +95,32 @@ public class PostServiceImpl implements PostService {
 
         Post updatedPost = postRepository.save(foundPost);
         return postMapper.postToPostDto(updatedPost);
+    }
+
+    @Override
+    public PostListPaged findPostsByCategory(String searchQuery, ECategory category, Integer pageNumber, Integer pageSize) {
+        if (pageNumber == null || pageNumber < 0) {
+            pageNumber = DEFAULT_PAGE_NUMBER;
+        }
+
+        if (pageSize == null || pageSize < 1 || pageSize > 100) {
+            pageSize = DEFAULT_PAGE_SIZE;
+        }
+        PageRequest page = PageRequest.of(pageNumber, pageSize, Sort.by("createdDate").descending());
+        Page<PostListItem> postListPage;
+
+        if (category.equals(ECategory.TITLE)) {
+            postListPage = postRepository.findPostListDtoByTitle(page, searchQuery);
+        } else if (category.equals(ECategory.CONTENT)) {
+            postListPage = postRepository.findPostListDtoByContent(page, searchQuery);
+        } else {
+            throw new ResourceNotFoundException("category doesn't exists");
+        }
+
+        return new PostListPaged(postListPage.getContent(),
+                PageRequest.of(postListPage.getPageable().getPageNumber(), postListPage.getPageable().getPageSize()),
+                postListPage.getTotalPages(),
+                postListPage.getTotalElements());
     }
 
     @Transactional

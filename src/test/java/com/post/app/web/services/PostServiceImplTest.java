@@ -2,6 +2,7 @@ package com.post.app.web.services;
 
 import com.post.app.domain.Post;
 import com.post.app.domain.User;
+import com.post.app.model.ECategory;
 import com.post.app.repositories.PostRepository;
 import com.post.app.web.model.BaseResponse;
 import com.post.app.web.model.Post.PostDto;
@@ -23,8 +24,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.reset;
@@ -131,4 +131,17 @@ class PostServiceImplTest {
         then(postMapper).should().postToPostDto(any(Post.class));
     }
 
+    @Test
+    void findPostsByCategory() {
+        Page<PostListItem> postListPage = new PageImpl<>(
+                List.of(new PostListItem()),
+                PageRequest.of(0, 20),
+                1);
+        given(postRepository.findPostListDtoByTitle(any(), any())).willReturn(postListPage);
+
+        PostListPaged postListPaged = postService.findPostsByCategory("query", ECategory.TITLE, 0, 20);
+
+        assertThat(postListPaged).isNotNull();
+        then(postRepository).should().findPostListDtoByTitle(any(Pageable.class), anyString());
+    }
 }
