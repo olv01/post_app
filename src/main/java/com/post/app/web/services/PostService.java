@@ -2,6 +2,7 @@ package com.post.app.web.services;
 
 import com.post.app.domain.Post;
 import com.post.app.domain.User;
+import com.post.app.model.ECategory;
 import com.post.app.web.model.BaseResponse;
 import com.post.app.web.model.Post.PostDto;
 import com.post.app.web.model.Post.PostListPaged;
@@ -19,4 +20,6 @@ public interface PostService {
     PostDto putPost(Long postId, Post post, User user);
 
     PostDto patchPost(Long postId, Post post, User user);
+
+    PostListPaged findPostsByCategory(String searchQuery, ECategory category, Integer pageNumber, Integer pageSize);
 }

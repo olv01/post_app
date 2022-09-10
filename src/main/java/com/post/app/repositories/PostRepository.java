@@ -16,4 +16,26 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             "LEFT JOIN p.postComments pc " +
             "GROUP BY p")
     Page<PostListItem> findPostListItem(Pageable pageable);
+
+    @Query(value = "SELECT new com.post.app.web.model.Post.PostListItem(" +
+            "p.id, p.title, u.username, p.createdDate, p.lastModifiedDate, count(pc.id)" +
+            ") FROM Post p " +
+            "JOIN p.user u " +
+            "LEFT JOIN p.postComments pc " +
+            "WHERE p.title LIKE %:searchQuery% " +
+            "GROUP BY p",
+            countQuery = "SELECT count(*) FROM Post p " +
+                    "WHERE p.title LIKE %:searchQuery%")
+    Page<PostListItem> findPostListDtoByTitle(Pageable pageable, String searchQuery);
+
+    @Query(value = "SELECT new com.post.app.web.model.Post.PostListItem(" +
+            "p.id, p.title, u.username, p.createdDate, p.lastModifiedDate, count(pc.id)" +
+            ") FROM Post p " +
+            "JOIN p.user u " +
+            "LEFT JOIN p.postComments pc " +
+            "WHERE p.content LIKE %:searchQuery% " +
+            "GROUP BY p",
+            countQuery = "SELECT count(*) FROM Post p " +
+                    "WHERE p.content LIKE %:searchQuery%")
+    Page<PostListItem> findPostListDtoByContent(Pageable pageable, String searchQuery);
 }

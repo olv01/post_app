@@ -2,6 +2,7 @@ package com.post.app.web.controllers;
 
 import com.post.app.domain.Post;
 import com.post.app.domain.User;
+import com.post.app.model.ECategory;
 import com.post.app.web.model.BaseResponse;
 import com.post.app.web.model.Post.PostDto;
 import com.post.app.web.model.Post.PostListPaged;
@@ -59,4 +60,12 @@ public class PostController {
         return new ResponseEntity<>(postService.deleteById(postId, user), HttpStatus.NO_CONTENT);
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<PostListPaged> searchPosts(
+            @RequestParam(value = "query", required = true) String searchQuery,
+            @RequestParam(value = "category", required = true) ECategory category,
+            @RequestParam(value = "pageNumber", required = false) Integer pageNumber,
+            @RequestParam(value = "pageSize", required = false) Integer pageSize) {
+        return new ResponseEntity<>(postService.findPostsByCategory(searchQuery, category, pageNumber, pageSize), HttpStatus.OK);
+    }
 }

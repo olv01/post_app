@@ -64,7 +64,7 @@ class PostControllerTest {
         mockMvc.perform(get("/api/posts/list"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath(".content").hasJsonPath());
+                .andExpect(jsonPath("$.content").hasJsonPath());
 
         then(postService).should().listPosts(any(), any());
     }
@@ -139,4 +139,14 @@ class PostControllerTest {
         then(postService).should().deleteById(anyLong(), any(User.class));
     }
 
+    @Test
+    void searchPosts() throws Exception {
+        given(postService.findPostsByCategory(any(), any(), any(), any())).willReturn(new PostListPaged());
+
+        mockMvc.perform(get("/api/posts/search?search=someQuery&category=TITLE")
+                        .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.content").hasJsonPath());
+    }
 }
