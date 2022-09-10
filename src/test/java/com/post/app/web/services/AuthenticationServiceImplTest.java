@@ -6,9 +6,7 @@ import com.post.app.model.JWTDto;
 import com.post.app.repositories.RoleRepository;
 import com.post.app.repositories.UserRepository;
 import com.post.app.services.JWTProvideService;
-import com.post.app.web.model.auth.JWTResponse;
-import com.post.app.web.model.auth.SignInRequest;
-import com.post.app.web.model.auth.SignUpRequest;
+import com.post.app.web.model.auth.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -92,5 +90,15 @@ class AuthenticationServiceImplTest {
         then(userRepository).should().existsByUsername(anyString());
         then(encoder).should().encode(anyString());
         then(jwtProvideService).should().generateToken(any(Authentication.class));
+    }
+
+    @Test
+    void checkUsername() {
+        given(userRepository.existsByUsername(any())).willReturn(true);
+
+        UserCheckResponse result = authService.checkUsername(new UserCheckRequest("John"));
+
+        assertThat(result.getExist()).isEqualTo(true);
+        then(userRepository).should().existsByUsername(anyString());
     }
 }

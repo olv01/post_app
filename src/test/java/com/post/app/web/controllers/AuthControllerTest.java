@@ -1,9 +1,8 @@
 package com.post.app.web.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.post.app.web.model.auth.JWTResponse;
-import com.post.app.web.model.auth.SignInRequest;
-import com.post.app.web.model.auth.SignUpRequest;
+import com.post.app.services.JWTProvideService;
+import com.post.app.web.model.auth.*;
 import com.post.app.web.services.AuthenticationService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +32,9 @@ class AuthControllerTest {
 
     @MockBean
     AuthenticationService authenticationService;
+
+    @MockBean
+    JWTProvideService jwtProvideService;
 
     @Test
     void signIn() throws Exception {
@@ -83,6 +85,24 @@ class AuthControllerTest {
         then(authenticationService).should().createNewUser(any(SignUpRequest.class));
     }
 
+    @Test
+    void checkUsername() throws Exception {
+        Map<String, String> request = new HashMap<>();
+        request.put("username", "John");
+        UserCheckResponse response = new UserCheckResponse("", true);
+        given(authenticationService.checkUsername(any())).willReturn(response);
+
+        mockMvc.perform(post("/api/auth/checkUsername")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonToString(request))
+                        .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.exist").value(true));
+
+        then(authenticationService).should().checkUsername(any(UserCheckRequest.class));
+    }
+
     private String asJsonToString(Object obj) {
         try {
             return new ObjectMapper().writeValueAsString(obj);
@@ -90,4 +110,5 @@ class AuthControllerTest {
             throw new RuntimeException(e);
         }
     }
+
 }

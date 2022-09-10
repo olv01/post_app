@@ -59,4 +59,19 @@ class AuthControllerIntegrationTest {
                 .andExpect(jsonPath("$.token").isNotEmpty())
                 .andExpect(jsonPath("$.message").value("New User Created"));
     }
+
+    @Test
+    void checkUsername() throws Exception {
+        Map<String, String> request = new HashMap<>();
+        request.put("username", "John");
+        String requestBody = new ObjectMapper().writeValueAsString(request);
+
+        mockMvc.perform(post("/api/auth/checkUsername")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.exist").value(true));
+    }
+
 }

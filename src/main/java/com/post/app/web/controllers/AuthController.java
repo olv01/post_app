@@ -1,8 +1,6 @@
 package com.post.app.web.controllers;
 
-import com.post.app.web.model.auth.JWTResponse;
-import com.post.app.web.model.auth.SignInRequest;
-import com.post.app.web.model.auth.SignUpRequest;
+import com.post.app.web.model.auth.*;
 import com.post.app.web.services.AuthenticationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,4 +28,10 @@ public class AuthController {
     public ResponseEntity<JWTResponse> signUp(@RequestBody SignUpRequest signUpRequest) {
         return new ResponseEntity<>(authService.createNewUser(signUpRequest), HttpStatus.CREATED);
     }
+
+    @PostMapping("/checkUsername")
+    public ResponseEntity<UserCheckResponse> checkUsername(@RequestBody UserCheckRequest userCheckRequest) {
+        return new ResponseEntity<>(authService.checkUsername(userCheckRequest), HttpStatus.OK);
+    }
+
 }

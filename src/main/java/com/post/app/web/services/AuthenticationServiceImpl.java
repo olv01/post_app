@@ -7,9 +7,7 @@ import com.post.app.model.JWTDto;
 import com.post.app.repositories.RoleRepository;
 import com.post.app.repositories.UserRepository;
 import com.post.app.services.JWTProvideService;
-import com.post.app.web.model.auth.JWTResponse;
-import com.post.app.web.model.auth.SignInRequest;
-import com.post.app.web.model.auth.SignUpRequest;
+import com.post.app.web.model.auth.*;
 import org.springframework.beans.factory.SmartInitializingSingleton;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationServiceException;
@@ -109,4 +107,12 @@ public class AuthenticationServiceImpl implements AuthenticationService, SmartIn
                 jwtDto.getExpiredAt());
     }
 
+    @Override
+    public UserCheckResponse checkUsername(UserCheckRequest userCheckRequest) {
+        String newUsername = userCheckRequest.getUsername();
+        if (userRepository.existsByUsername(newUsername)) {
+            return new UserCheckResponse("Username '" + newUsername + "' is already taken", true);
+        }
+        return new UserCheckResponse("Username '" + newUsername + "' is available", false);
+    }
 }
