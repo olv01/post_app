@@ -62,7 +62,7 @@ public class PostController {
 
     @GetMapping("/search")
     public ResponseEntity<PostListPaged> searchPosts(
-            @RequestParam(value = "search", required = true) String searchQuery,
+            @RequestParam(value = "query", required = true) String searchQuery,
             @RequestParam(value = "category", required = true) ECategory category,
             @RequestParam(value = "pageNumber", required = false) Integer pageNumber,
             @RequestParam(value = "pageSize", required = false) Integer pageSize) {

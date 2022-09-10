@@ -17,7 +17,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             "GROUP BY p")
     Page<PostListItem> findPostListItem(Pageable pageable);
 
-    @Query(value = "SELECT new com.memo.app.web.model.PostListDto(" +
+    @Query(value = "SELECT new com.post.app.web.model.Post.PostListItem(" +
             "p.id, p.title, u.username, p.createdDate, p.lastModifiedDate, count(pc.id)" +
             ") FROM Post p " +
             "JOIN p.user u " +
@@ -28,7 +28,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
                     "WHERE p.title LIKE %:searchQuery%")
     Page<PostListItem> findPostListDtoByTitle(Pageable pageable, String searchQuery);
 
-    @Query(value = "SELECT new com.memo.app.web.model.PostListDto(" +
+    @Query(value = "SELECT new com.post.app.web.model.Post.PostListItem(" +
             "p.id, p.title, u.username, p.createdDate, p.lastModifiedDate, count(pc.id)" +
             ") FROM Post p " +
             "JOIN p.user u " +
