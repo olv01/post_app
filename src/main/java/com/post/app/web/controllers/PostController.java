@@ -3,7 +3,6 @@ package com.post.app.web.controllers;
 import com.post.app.domain.Post;
 import com.post.app.domain.User;
 import com.post.app.model.ECategory;
-import com.post.app.web.model.BaseResponse;
 import com.post.app.web.model.Post.PostDto;
 import com.post.app.web.model.Post.PostListPaged;
 import com.post.app.web.services.PostService;
@@ -55,9 +54,10 @@ public class PostController {
     }
 
     @DeleteMapping("/{postId}")
-    public ResponseEntity<BaseResponse> deletePost(@PathVariable Long postId,
-                                                   @AuthenticationPrincipal User user) {
-        return new ResponseEntity<>(postService.deleteById(postId, user), HttpStatus.NO_CONTENT);
+    public ResponseEntity<Void> deletePost(@PathVariable Long postId,
+                                           @AuthenticationPrincipal User user) {
+        postService.deleteById(postId, user);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/search")

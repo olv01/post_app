@@ -2,7 +2,6 @@ package com.post.app.web.controllers;
 
 import com.post.app.domain.PostComment;
 import com.post.app.domain.User;
-import com.post.app.web.model.BaseResponse;
 import com.post.app.web.model.Post.PostCommentDto;
 import com.post.app.web.services.PostCommentService;
 import org.springframework.http.HttpStatus;
@@ -28,9 +27,10 @@ public class PostCommentController {
     }
 
     @DeleteMapping("/{postCommentId}")
-    public ResponseEntity<BaseResponse> deletePostComment(@PathVariable("postCommentId") Long postCommentId,
-                                                          @AuthenticationPrincipal User user) {
-        return new ResponseEntity<>(postCommentService.deleteById(postCommentId, user), HttpStatus.NO_CONTENT);
+    public ResponseEntity<Void> deletePostComment(@PathVariable("postCommentId") Long postCommentId,
+                                                  @AuthenticationPrincipal User user) {
+        postCommentService.deleteById(postCommentId, user);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PatchMapping("/{postCommentId}")

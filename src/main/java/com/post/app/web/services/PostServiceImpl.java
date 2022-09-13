@@ -5,7 +5,6 @@ import com.post.app.domain.User;
 import com.post.app.exception.ResourceNotFoundException;
 import com.post.app.model.ECategory;
 import com.post.app.repositories.PostRepository;
-import com.post.app.web.model.BaseResponse;
 import com.post.app.web.model.Post.PostDto;
 import com.post.app.web.model.Post.PostListItem;
 import com.post.app.web.model.Post.PostListPaged;
@@ -67,10 +66,9 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public BaseResponse deleteById(Long postId, User user) {
+    public void deleteById(Long postId, User user) {
         Post foundPost = checkPostOwner(postId, user);
         postRepository.delete(foundPost);
-        return new BaseResponse("Deleted Successfully");
     }
 
     @Override

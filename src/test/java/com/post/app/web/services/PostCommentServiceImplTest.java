@@ -5,7 +5,6 @@ import com.post.app.domain.PostComment;
 import com.post.app.domain.User;
 import com.post.app.repositories.PostCommentRepository;
 import com.post.app.repositories.PostRepository;
-import com.post.app.web.model.BaseResponse;
 import com.post.app.web.model.Post.PostCommentDto;
 import com.post.app.web.model.mapper.PostCommentMapper;
 import org.junit.jupiter.api.AfterEach;
@@ -70,9 +69,8 @@ class PostCommentServiceImplTest {
         postComment.setUser(user);
         given(postCommentRepository.findById(anyLong())).willReturn(Optional.of(postComment));
 
-        BaseResponse baseResponse = postCommentService.deleteById(1L, user);
+        postCommentService.deleteById(1L, user);
 
-        assertThat(baseResponse).isNotNull();
         then(postCommentRepository).should().findById(anyLong());
         then(postCommentRepository).should().deleteById(anyLong());
     }

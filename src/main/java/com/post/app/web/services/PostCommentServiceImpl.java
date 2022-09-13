@@ -6,7 +6,6 @@ import com.post.app.domain.User;
 import com.post.app.exception.ResourceNotFoundException;
 import com.post.app.repositories.PostCommentRepository;
 import com.post.app.repositories.PostRepository;
-import com.post.app.web.model.BaseResponse;
 import com.post.app.web.model.Post.PostCommentDto;
 import com.post.app.web.model.mapper.PostCommentMapper;
 import org.springframework.security.access.AccessDeniedException;
@@ -42,10 +41,9 @@ public class PostCommentServiceImpl implements PostCommentService {
     }
 
     @Override
-    public BaseResponse deleteById(Long postCommentId, User user) {
+    public void deleteById(Long postCommentId, User user) {
         checkPostCommentOwner(postCommentId, user);
         postCommentRepository.deleteById(postCommentId);
-        return new BaseResponse("Deleted Successfully");
     }
 
     @Override

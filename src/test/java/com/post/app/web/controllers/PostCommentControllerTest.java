@@ -5,7 +5,6 @@ import com.post.app.config.WithCustomUser;
 import com.post.app.domain.PostComment;
 import com.post.app.domain.User;
 import com.post.app.services.JWTProvideService;
-import com.post.app.web.model.BaseResponse;
 import com.post.app.web.model.Post.PostCommentDto;
 import com.post.app.web.services.PostCommentService;
 import org.junit.jupiter.api.AfterEach;
@@ -73,13 +72,9 @@ class PostCommentControllerTest {
 
     @Test
     void deletePostComment() throws Exception {
-        given(postCommentService.deleteById(any(), any())).willReturn(new BaseResponse(""));
-
         mockMvc.perform(delete("/api/posts/1/comments/1")
                         .with(csrf()))
-                .andExpect(status().isNoContent())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.message").hasJsonPath());
+                .andExpect(status().isNoContent());
 
         then(postCommentService).should().deleteById(anyLong(), any(User.class));
     }

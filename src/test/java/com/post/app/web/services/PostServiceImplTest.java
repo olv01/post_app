@@ -4,7 +4,6 @@ import com.post.app.domain.Post;
 import com.post.app.domain.User;
 import com.post.app.model.ECategory;
 import com.post.app.repositories.PostRepository;
-import com.post.app.web.model.BaseResponse;
 import com.post.app.web.model.Post.PostDto;
 import com.post.app.web.model.Post.PostListItem;
 import com.post.app.web.model.Post.PostListPaged;
@@ -93,9 +92,8 @@ class PostServiceImplTest {
     void deleteById() {
         given(postRepository.findById(anyLong())).willReturn(Optional.of(post));
 
-        BaseResponse baseResponse = postService.deleteById(1L, user);
+        postService.deleteById(1L, user);
 
-        assertThat(baseResponse).isNotNull();
         then(postRepository).should().findById(1L);
         then(postRepository).should().delete(any(Post.class));
     }

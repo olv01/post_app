@@ -5,7 +5,6 @@ import com.post.app.config.WithCustomUser;
 import com.post.app.domain.Post;
 import com.post.app.domain.User;
 import com.post.app.services.JWTProvideService;
-import com.post.app.web.model.BaseResponse;
 import com.post.app.web.model.Post.PostDto;
 import com.post.app.web.model.Post.PostListPaged;
 import com.post.app.web.services.PostService;
@@ -128,13 +127,9 @@ class PostControllerTest {
 
     @Test
     void deletePost() throws Exception {
-        given(postService.deleteById(any(), any())).willReturn(new BaseResponse(""));
-
         mockMvc.perform(delete("/api/posts/1")
                         .with(csrf()))
-                .andExpect(status().isNoContent())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.message").hasJsonPath());
+                .andExpect(status().isNoContent());
 
         then(postService).should().deleteById(anyLong(), any(User.class));
     }
@@ -143,7 +138,7 @@ class PostControllerTest {
     void searchPosts() throws Exception {
         given(postService.findPostsByCategory(any(), any(), any(), any())).willReturn(new PostListPaged());
 
-        mockMvc.perform(get("/api/posts/search?search=someQuery&category=TITLE")
+        mockMvc.perform(get("/api/posts/search?query=someQuery&category=TITLE")
                         .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
